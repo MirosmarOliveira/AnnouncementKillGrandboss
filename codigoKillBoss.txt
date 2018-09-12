@@ -1,0 +1,65 @@
+head-src\com\l2jfrozen\gameserver\model\actor\instance
+
++import com.l2jfrozen.Config;
++import com.l2jfrozen.gameserver.util.Broadcast;
++import com.l2jfrozen.gameserver.model.entity.Announcements;
+-import com.l2jfrozen.gameserver.managers.GrandBossManager;
+
+-if(player != null)
+-{
+-SystemMessage msg = new SystemMessage(SystemMessageId.RAID_WAS_SUCCESSFUL);
+-broadcastPacket(msg);
+-msg = null;
+-if(player.getParty() != null)
+-{
+-for(L2PcInstance member : player.getParty().getPartyMembers())
+-{
+-RaidBossPointsManager.addPoints(member, getNpcId(), (getLevel() / 2) + Rnd.get(-5, 5));
+-}
+-}
+-else
+-RaidBossPointsManager.addPoints(player, getNpcId(), (getLevel() / 2) + Rnd.get(-5, 5));
+
++if ((Config.ANNOUNCEMENT_KILL_GRANDBOSS))
++{
++Announcements _an = Announcements.getInstance();			 
++_an.announceToAll("the " + getName() + " was killed by " + player.getName());
++}	
+-return true;
+-}				
+//===================================================================================
+
+\L2jFrozen_GameServer\head-src\com\l2jfrozen
+-ALLOW_AIO_USE_CM = Boolean.parseBoolean(otherSettings.getProperty("AllowAioUseClassMaster", "False"));
+-ANNOUNCE_CASTLE_LORDS = Boolean.parseBoolean(otherSettings.getProperty("AnnounceCastleLords", "False"));
++ANNOUNCEMENT_KILL_GRANDBOSS = Boolean.parseBoolean(otherSettings.getProperty ("AnnouncementKillGrandboss", "True"));
++if(ANNOUNCEMENT_KILL_GRANDBOSS) {
++BOSS_IDS = otherSettings.getProperty("BossIds", "0");
++BOSS_IDS_LIST = new FastList<>();
++for (final String id : BOSS_IDS.split(","))
++{
++BOSS_IDS_LIST.add(Integer.parseInt(id));
++}
++}
+
+//==========================//==========================//==========================
+
+\L2jFrozen_GameServer\head-src\com\l2jfrozen
+-public static boolean ALLOW_AIO_USE_CM;
+-public static boolean ANNOUNCE_CASTLE_LORDS;
++public static boolean ANNOUNCEMENT_KILL_GRANDBOSS;
++public static boolean ANNOUNCEMENT_SPAWN_GRANDBOSS;	
++public static String BOSS_IDS;
++public static FastList<Integer> BOSS_IDS_LIST = new FastList<>();
+
+//==========================//==========================//==========================
+
+L2jFrozen_GameServer\config\head other.properties
+
+# ---------------------------------------------------------------------------
+# Announcement GrandBoss kill
+# ---------------------------------------------------------------------------
+#False = Off True = On
+AnnouncementKillGrandboss = False
+Ex:BossId = 12312,122,1225
+BossId =
